@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Find a previous order</h2>
+  <p class="muted">Enter the matric number and email you used when placing the order.</p>
+  <form method="post" action="/{{ school.slug }}/orders/lookup">
+    <label>Matric number <input type="text" name="matric_no" required style="text-transform:uppercase"></label>
+    <label>Email <input type="email" name="email" required></label>
+    <button class="primary" type="submit">Look up</button>
+  </form>
+  {% if error %}<p class="err">{{ error }}</p>{% endif %}
+  {% if results is not none %}
+    <h3 style="margin-top:1.5rem;">Results</h3>
+    {% if not results %}<p class="muted">No orders found.</p>{% endif %}
+    {% for o in results %}
+      <div class="download-card">
+        <div>
+          <div><strong>Order #{{ o.id }}</strong> · {{ o.package }} · ₦{{ o.amount }}</div>
+          <div class="muted">{{ o.created_at[:19] }} · <span class="status-pill {{ o.status }}">{{ o.status }}</span></div>
+        </div>
+        <a href="/{{ school.slug }}/orders/{{ o.id }}/status">View</a>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

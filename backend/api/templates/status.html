@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Order #{{ order.id }}</h2>
+  <p class="muted">{{ order.student_name }} · {{ order.matric_no }} · {{ order.package }} · ₦{{ order.amount }}</p>
+  <p><span class="status-pill {{ order.status }}" id="status-pill">{{ order.status }}</span></p>
+
+  <div id="generating-msg" style="display:none;">
+    <p>Your report is being generated. This typically takes 1–3 minutes.</p>
+    <ul id="milestones" class="muted"></ul>
+  </div>
+
+  <div id="awaiting-form" style="display:none;">
+    <p>Payment confirmed. Please complete your internship details to start generation.</p>
+    <a id="form-link" class="primary" style="display:inline-block;padding:0.7rem 1.5rem;background:var(--navy);color:#fff;border-radius:5px;text-decoration:none;">Complete details</a>
+  </div>
+
+  <div id="downloads" style="display:none;">
+    <h3>Your files</h3>
+    <div id="docx-card" class="download-card" style="display:none;">
+      <div><div><strong>Word document</strong></div><div class="muted">.docx — Open and refresh fields when prompted</div></div>
+      <a id="docx-link" href="#">Download</a>
+    </div>
+    <div id="pptx-card" class="download-card" style="display:none;">
+      <div><div><strong>Presentation</strong></div><div class="muted">.pptx — 13–15 slides</div></div>
+      <a id="pptx-link" href="#">Download</a>
+    </div>
+    <p class="muted" id="ref-code"></p>
+  </div>
+
+  <div id="failed-msg" style="display:none;">
+    <p class="err">Generation failed. Please contact support and reference this order ID.</p>
+    {% if order.error_message %}<pre style="background:#fafafa;padding:0.75rem;border-radius:5px;font-size:0.82rem;white-space:pre-wrap;">{{ order.error_message }}</pre>{% endif %}
+  </div>
+</div>
+
+<script>
+const slug = {{ school.slug | tojson }};
+const orderId = {{ order.id }};
+
+async function poll() {
+  try {
+    const r = await fetch(`/${slug}/orders/${orderId}/status.json`);
+    const d = await r.json();
+    document.getElementById('status-pill').textContent = d.status;
+    document.getElementById('status-pill').className = 'status-pill ' + d.status;
+
+    document.getElementById('generating-msg').style.display = d.status === 'generating' ? 'block' : 'none';
+    document.getElementById('awaiting-form').style.display = (d.status === 'awaiting_details' || d.status === 'pending_payment') ? 'block' : 'none';
+    document.getElementById('downloads').style.display = d.status === 'generated' ? 'block' : 'none';
+    document.getElementById('failed-msg').style.display = d.status === 'failed' ? 'block' : 'none';
+
+    const ms = document.getElementById('milestones');
+    ms.innerHTML = '';
+    (d.milestones || []).forEach(m => { const li = document.createElement('li'); li.textContent = m.replaceAll('_', ' '); ms.appendChild(li); });
+
+    if (d.has_docx) {
+      document.getElementById('docx-card').style.display = 'flex';
+      document.getElementById('docx-link').href = `/${slug}/download/${orderId}/docx`;
+    }
+    if (d.has_pptx) {
+      document.getElementById('pptx-card').style.display = 'flex';
+      document.getElementById('pptx-link').href = `/${slug}/download/${orderId}/pptx`;
+    }
+    if (d.referral_code) {
+      document.getElementById('ref-code').textContent = `Your referral code: ${d.referral_code} (₦1,500 off for a friend, ₦1,500 credit for you).`;
+    }
+    if (d.status === 'awaiting_details') {
+      const tok = new URLSearchParams(location.search).get('token');
+      // We need the form_token — show admin support note instead
+      const link = document.getElementById('form-link');
+      // Without the token (which is included in the redirect after payment), prompt user
+      if (!tok) {
+        link.textContent = 'Please use the link sent to you after payment';
+        link.style.pointerEvents = 'none';
+        link.style.opacity = '0.6';
+      } else {
+        link.href = `/${slug}/orders/${orderId}/form?token=${encodeURIComponent(tok)}`;
+      }
+    }
+  } catch (e) { /* ignore */ }
+}
+poll();
+setInterval(poll, 4000);
+</script>
+{% endblock %}

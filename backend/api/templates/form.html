@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Internship details</h2>
+  <p class="muted">Tell us about your SIWES placement. Be specific — the more detail you provide, the better the report.</p>
+</div>
+
+<form method="post" action="/{{ school.slug }}/orders/{{ order.id }}/complete?token={{ form_token }}" enctype="multipart/form-data" id="intake-form">
+
+<div class="card">
+  <h3>Student information</h3>
+  <label>Full name <input type="text" name="student_name" required value="{{ order.student_name }}"></label>
+  <label>Name as it should appear on the cover (CAPS) <input type="text" name="student_name_for_cover"></label>
+  <div class="row">
+    <label>Matric number <input type="text" name="student_matric_no" required value="{{ order.matric_no }}" style="text-transform:uppercase"></label>
+    <label>Student ID <small>(optional)</small> <input type="text" name="student_id"></label>
+  </div>
+  <div class="row">
+    <label>Department
+      <select name="student_department" required>
+        <option value="">— Select —</option>
+        {% for d in config_parsed.departments %}<option value="{{ d }}">{{ d }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>College
+      <select name="student_college">
+        <option value="">— Select —</option>
+        {% for c in config_parsed.colleges %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+      </select>
+    </label>
+  </div>
+  <div class="row">
+    <label>Degree
+      <select name="student_degree" id="degree-select" required>
+        <option value="">— Select —</option>
+        {% for d in config_parsed.degrees %}<option value="{{ d.label }}" data-short="{{ d.short }}">{{ d.label }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Degree (short) <input type="text" name="student_degree_short" id="degree-short" placeholder="B.Eng."></label>
+  </div>
+  <label>Email <input type="email" name="student_email" required value="{{ order.student_email }}"></label>
+</div>
+
+<div class="card">
+  <h3>Internship details</h3>
+  <label>Company name <input type="text" name="company_name" required></label>
+  <label>Company address <input type="text" name="company_address"></label>
+  <label>Company logo (optional) <input type="file" name="company_logo" accept="image/*"></label>
+  <label>Department of attachment <input type="text" name="department_at_company"></label>
+  <div class="row">
+    <label>Industry supervisor <input type="text" name="industry_supervisor_name"></label>
+    <label>Academic supervisor <input type="text" name="academic_supervisor_name"></label>
+  </div>
+  <div class="row-3">
+    <label>Start date <input type="date" name="start_date"></label>
+    <label>End date <input type="date" name="end_date"></label>
+    <label>Duration text <input type="text" name="duration" placeholder="JANUARY – JUNE, 2025"></label>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Content</h3>
+  <label>Company history <small>(2–3 sentences; AI will expand)</small>
+    <textarea name="company_history"></textarea></label>
+  <label>Tools used <small>(one per line)</small>
+    <textarea name="tools_used" placeholder="Digital Multimeter&#10;PLC&#10;..."></textarea></label>
+  <label>Weekly activities <small>(week | summary — one line per week)</small>
+    <textarea name="weekly_activities" placeholder="1 | Safety induction and orientation&#10;2 | Tour of the production floor&#10;..."></textarea></label>
+  <label>Challenges <small>(problem | solution — one per line)</small>
+    <textarea name="challenges" placeholder="Limited PPE | Improvised with personal kit&#10;..."></textarea></label>
+  <label>Problems solved <small>(title | narrative — one per line)</small>
+    <textarea name="problems_solved" placeholder="Faulty contactor | Diagnosed coil failure and replaced..."></textarea></label>
+  <label>Skills acquired <small>(one per line)</small>
+    <textarea name="skills_acquired"></textarea></label>
+  <label>Recommendations <small>(free text — AI will format)</small>
+    <textarea name="recommendations"></textarea></label>
+</div>
+
+<div class="card">
+  <h3>Photos</h3>
+  <p class="muted">Upload up to 6 photos from your SIWES. Each goes into Chapter 2 or 3 with a caption.</p>
+  <div id="image-rows"></div>
+  <button type="button" class="primary" id="add-image">+ Add photo</button>
+</div>
+
+<div class="card">
+  <h3>References</h3>
+  <label>One reference per line: <small>type | authors | year | title | publisher | edition | url</small>
+    <textarea name="references" placeholder="Book | Bird, J. | 2010 | Electrical and Electronic Principles | Routledge | 4th |"></textarea></label>
+</div>
+
+<div class="card">
+  <h3>Submission</h3>
+  <div class="row">
+    <label>SIWES officer name <input type="text" name="siwes_officer_name"></label>
+    <label>HOD name <input type="text" name="hod_name"></label>
+  </div>
+  <label>Submission date <input type="date" name="submission_date"></label>
+</div>
+
+<div class="card" style="text-align:center;">
+  <button class="gold" type="submit">Submit & generate</button>
+</div>
+
+</form>
+
+<script>
+document.getElementById('degree-select').addEventListener('change', e => {
+  const opt = e.target.selectedOptions[0];
+  document.getElementById('degree-short').value = opt?.dataset?.short || '';
+});
+
+const imageRows = document.getElementById('image-rows');
+function addImageRow() {
+  const div = document.createElement('div');
+  div.className = 'row-3';
+  div.style.marginBottom = '0.75rem';
+  div.innerHTML = `
+    <label>Photo <input type="file" name="image_file" accept="image/*"></label>
+    <label>Chapter
+      <select name="image_chapter"><option value="2">Chapter 2 (Workdone)</option><option value="3">Chapter 3 (Challenges)</option></select>
+    </label>
+    <label>Caption <input type="text" name="image_description"></label>
+  `;
+  imageRows.appendChild(div);
+}
+document.getElementById('add-image').addEventListener('click', addImageRow);
+addImageRow(); addImageRow();
+</script>
+{% endblock %}

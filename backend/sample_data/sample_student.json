@@ -1,0 +1,106 @@
+{
+  "student": {
+    "name": "Praise Audu",
+    "name_for_cover": "AUDU, PRAISE",
+    "student_id": "2100489",
+    "matric_no": "21CK030001",
+    "department": "Mechanical and Mechatronics Engineering",
+    "college": "College of Engineering",
+    "degree": "Bachelor of Engineering in Mechatronics Engineering",
+    "degree_short": "B.Eng.",
+    "email": "praise.audu@lmu.edu.ng"
+  },
+  "internship": {
+    "company_name": "Honeywell Flour Mills Plc",
+    "company_address": "2nd Gate By Tincan Island, Apapa, Lagos State, Nigeria",
+    "company_logo_url": null,
+    "department_at_company": "Electrical and Instrumentation Department",
+    "industry_supervisor_name": "Engr. Tunde Bakare",
+    "academic_supervisor_name": "Dr. A. O. Akinwale",
+    "start_date": "2025-01-13",
+    "end_date": "2025-06-30",
+    "duration": "JANUARY – JUNE, 2025"
+  },
+  "content": {
+    "company_history": "Honeywell Flour Mills Plc was incorporated on 21 June 1983 as a private limited liability company and converted to a public company in 2008. The company operates one of the largest single-site flour mills in sub-Saharan Africa, producing flour, semolina, whole wheat meal, noodles and pasta under the Honeywell brand. Its Apapa plant houses a modern PLC-controlled milling line, a high-capacity boiler house, and an automated packaging hall. The Electrical and Instrumentation department I was attached to is responsible for maintaining motor control centres, variable frequency drives, distributed control systems, plant-wide instrumentation and the SCADA infrastructure.",
+    "tools_used": [
+      "Digital Multimeter (Fluke 117)",
+      "Clamp Meter (Fluke 376)",
+      "Insulation Resistance Tester (Megger MIT400)",
+      "Siemens TIA Portal V17",
+      "Siemens S7-1200 PLC",
+      "Allen-Bradley RSLogix 5000",
+      "AutoCAD Electrical 2024",
+      "Variable Frequency Drives (Danfoss FC-302)",
+      "Phase Sequence Indicator",
+      "Pressure and Temperature Calibrators",
+      "Hand Tools (screwdriver set, pliers, wire strippers)",
+      "Personal Protective Equipment (safety boots, helmet, gloves, goggles)"
+    ],
+    "weekly_activities": [
+      {"week": 1, "summary": "Site induction, factory safety training, introduction to the Electrical and Instrumentation workshop, and orientation on the layout of the mill, packaging hall and boiler house. Reviewed the company HSE policy and signed the SIWES indemnity form."},
+      {"week": 2, "summary": "Studied single-line diagrams of the 11kV/415V distribution network. Shadowed senior technicians on routine inspection of motor control centres and learned how to read trip schedules for circuit breakers protecting the milling line motors."},
+      {"week": 3, "summary": "Hands-on practice with the Fluke 117 multimeter and Megger MIT400 insulation tester. Performed insulation resistance tests on three 75kW induction motors driving the roller mill and documented the readings against the maintenance baseline."},
+      {"week": 4, "summary": "Introduction to Siemens S7-1200 PLC architecture using TIA Portal V17. Built a basic ladder logic program to simulate the start/stop of a conveyor with interlocks and downloaded it to a training PLC in the workshop."},
+      {"week": 5, "summary": "Joined the team commissioning a new Danfoss FC-302 variable frequency drive on the pneumatic flour conveying line. Assisted with parameter configuration, motor auto-tuning and verifying the 4-20mA signal from the line pressure transmitter."},
+      {"week": 6, "summary": "Preventive maintenance week. Cleaned and tightened contactor terminals in MCC-2, replaced worn auxiliary contacts on two starter panels, and updated the maintenance log with torque values applied."},
+      {"week": 7, "summary": "Worked on instrumentation. Calibrated four Rosemount pressure transmitters using a Druck pressure calibrator, then loop-tested the signal end-to-end from the field junction box into the DCS marshalling cabinet."},
+      {"week": 8, "summary": "Troubleshot a recurring trip on the main flour packer drive. Traced the fault to a degraded encoder cable that was inducing noise into the VFD feedback loop; replaced the cable with shielded equivalent and re-routed away from the power conductors."},
+      {"week": 9, "summary": "Participated in the monthly boiler shutdown. Helped inspect and test boiler safety interlocks including the low-water cut-off, flame failure detector and high-pressure switch, all against the manufacturer's commissioning checklist."},
+      {"week": 10, "summary": "Read PLC code on the noodle line packaging robot and modified a sub-routine to add a missing alarm tag for the carton-feeder photo-eye. Tested the change offline before deploying it during the next changeover."},
+      {"week": 11, "summary": "Drew an updated electrical schematic in AutoCAD Electrical for a modified bagging-line control panel and reviewed it with the senior electrical engineer before printing for the panel builder."},
+      {"week": 12, "summary": "Spent the week with the SCADA team. Created a new mimic for the semolina line in the WinCC environment, linking tags from the S7-1500 PLC and adding alarm prioritisation per the plant alarm philosophy."},
+      {"week": 13, "summary": "Assisted with night-shift troubleshooting of an unexplained mill trip. Used DCS event logs to correlate the trip with a brief 415V dip on Feeder-3 and recommended the addition of an under-voltage ride-through setting on the affected VFDs."},
+      {"week": 14, "summary": "Carried out thermographic inspection of MCC panels with an infrared camera. Identified two hot spots on incoming busbar bolts; reported to the supervisor and scheduled re-tightening during the next planned outage."},
+      {"week": 15, "summary": "Studied and documented the plant earthing system. Measured earth pit resistance at seven test points and compared the readings against the BS 7430 recommended values, flagging two pits for soil treatment."},
+      {"week": 16, "summary": "Designed and implemented a simple PLC-based interlock to prevent the simultaneous start of two large compressors on the same feeder. Tested the logic with the maintenance team before handover."},
+      {"week": 17, "summary": "Worked on the upgrade of the packaging hall lighting from sodium vapour to LED. Helped with luminaire layout calculations, cable sizing for the new circuits and the commissioning of the photocell controller."},
+      {"week": 18, "summary": "Joined the calibration team for the annual recertification of plant safety instruments. Documented as-found and as-left values for level switches, pressure switches and emergency stop circuits across the milling line."},
+      {"week": 19, "summary": "Helped configure a new HMI panel (Siemens KTP700) for the dough mixer area. Designed three screens covering process overview, alarms and recipe selection, and trained two operators on the basic navigation."},
+      {"week": 20, "summary": "Investigated nuisance tripping of the boiler feed pump VFD during morning start-up. Tuned the acceleration ramp parameters and added a soft pre-charge timer, which eliminated the trips during two weeks of monitoring."},
+      {"week": 21, "summary": "Participated in a root cause analysis for a flour line stoppage that lasted three hours. Used the 5-Why technique with the maintenance team and contributed observations on the condition of the affected proximity switches."},
+      {"week": 22, "summary": "Wrote up standard operating procedures for two recurring maintenance tasks: VFD parameter back-up and PLC project archival. Procedures were reviewed by the supervisor and added to the departmental document register."},
+      {"week": 23, "summary": "Final handover week. Compiled the logbook, returned PPE and tools, debriefed with the supervisor on key learning points, and obtained the signed company evaluation form for submission to the SIWES unit."}
+    ],
+    "challenges": [
+      {"problem": "Recurring VFD trip on the main flour packer caused by encoder feedback noise.", "solution": "Replaced the unshielded encoder cable with a shielded twisted-pair, separated it from power conductors in the cable tray, and bonded the shield to ground at the drive end only."},
+      {"problem": "Two thermographic hotspots on MCC incoming busbar bolts identified during inspection.", "solution": "Logged the hotspots with thermal images, isolated the MCC during the next planned outage, re-tightened the bolts to the manufacturer's torque specification and re-scanned to confirm the temperature differential returned to normal."},
+      {"problem": "Earth pit resistance values at two test points exceeded the recommended 1 ohm threshold.", "solution": "Reported to the supervisor, added bentonite and salt treatment to the affected pits and re-tested after 48 hours; resistance dropped within the acceptable range."},
+      {"problem": "Boiler feed pump VFD nuisance-tripping during morning cold-start.", "solution": "Reviewed drive event logs, lengthened the acceleration ramp from 5 seconds to 12 seconds and introduced a soft pre-charge timer; the trips ceased over a two-week observation window."},
+      {"problem": "Operators struggled to navigate the new KTP700 HMI on the dough mixer.", "solution": "Simplified the screen layout to three core views, increased button sizes, added consistent colour coding and ran a short hands-on training session for the two day-shift operators."}
+    ],
+    "images": [
+      {"url_or_path": "uploads/sample/mcc_panel.jpg", "chapter": 2, "sequence": 1, "description": "Inspection of Motor Control Centre 2 during preventive maintenance"},
+      {"url_or_path": "uploads/sample/plc_programming.jpg", "chapter": 2, "sequence": 2, "description": "Ladder logic development for the conveyor interlock in Siemens TIA Portal"},
+      {"url_or_path": "uploads/sample/vfd_commissioning.jpg", "chapter": 2, "sequence": 3, "description": "Commissioning of the Danfoss FC-302 variable frequency drive on the flour conveying line"},
+      {"url_or_path": "uploads/sample/calibration.jpg", "chapter": 2, "sequence": 4, "description": "Pressure transmitter calibration with the Druck pressure calibrator"},
+      {"url_or_path": "uploads/sample/scada_mimic.jpg", "chapter": 2, "sequence": 5, "description": "New semolina line mimic developed in the WinCC SCADA environment"},
+      {"url_or_path": "uploads/sample/thermography.jpg", "chapter": 3, "sequence": 1, "description": "Thermographic image showing the busbar bolt hotspot identified in MCC-1"}
+    ],
+    "problems_solved": [
+      {"title": "Encoder Cable Replacement on Flour Packer VFD", "narrative": "I assisted the senior technician in tracing recurring trips of the main packer drive to a noisy encoder feedback signal. After confirming the cable shield was broken, I helped pull in a new shielded twisted-pair cable, terminate it correctly at the drive end, and verify the feedback waveform on the drive software. The drive ran for two weeks afterwards without a single trip."},
+      {"title": "Bentonite Treatment of Earth Pits", "narrative": "I supported the earthing audit by recording resistance readings at all seven test pits and identifying the two that failed the 1-ohm criterion. I then worked with the team to apply a bentonite and salt mixture, re-test after 48 hours, and document the improvement in the maintenance register."},
+      {"title": "HMI Operator Training for the Dough Mixer", "narrative": "When operators struggled to navigate the new KTP700 HMI, I helped simplify the screen layout, introduced colour coding for alarms versus controls, and ran a short hands-on session with the day-shift operators. Operator-reported HMI issues dropped to zero in the following weeks."}
+    ],
+    "skills_acquired": "Practical understanding of industrial electrical distribution at 11kV and 415V levels; competent use of Siemens TIA Portal for S7-1200 and S7-1500 PLC programming; commissioning and parameter configuration of variable frequency drives; calibration of pressure, temperature and level instruments; SCADA mimic development and alarm management in WinCC; reading and modifying electrical schematics in AutoCAD Electrical; thermographic inspection workflow; safety awareness in line with plant HSE policy; troubleshooting methodology including the 5-Why technique; and professional documentation of maintenance activities.",
+    "recommendations": "Landmark University should strengthen the practical PLC and SCADA content of the mechatronics curriculum to better prepare students for industrial placement. The SIWES unit should establish more formal partnerships with FMCG and manufacturing companies in Lagos and Ogun states to widen placement opportunities. Companies should give student interns a clearly written work-plan at the start of the placement, as this significantly improves learning outcomes. Finally, the school should consider a short pre-SIWES safety course covering industrial PPE, lock-out tag-out and electrical hazard awareness.",
+    "references": [
+      {"type": "Book", "authors": "Bentley, J. P.", "year": 2005, "title": "Principles of Measurement Systems", "publisher": "Pearson Education Limited", "edition": "4th Edition"},
+      {"type": "Book", "authors": "Bolton, W.", "year": 2015, "title": "Programmable Logic Controllers", "publisher": "Newnes", "edition": "6th Edition"},
+      {"type": "Book", "authors": "Hughes, A., and Drury, B.", "year": 2019, "title": "Electric Motors and Drives: Fundamentals, Types and Applications", "publisher": "Newnes", "edition": "5th Edition"},
+      {"type": "Report", "authors": "Industrial Training Fund", "year": 2022, "title": "SIWES Operational Guidelines for Students and Supervisors", "publisher": "ITF Publications, Jos"},
+      {"type": "Website", "authors": "Siemens AG", "year": 2023, "title": "TIA Portal V17 System Manual", "url": "https://support.industry.siemens.com"},
+      {"type": "Website", "authors": "Danfoss A/S", "year": 2022, "title": "VLT AutomationDrive FC 302 Programming Guide", "url": "https://www.danfoss.com/en/service-and-support/documentation"}
+    ]
+  },
+  "submission": {
+    "siwes_officer_name": "Engr. S. O. Oladimeji",
+    "hod_name": "Dr. S. J. Aliyu",
+    "submission_date": "2025-07-15"
+  },
+  "order": {
+    "package": "premium",
+    "amount": 12000,
+    "express": false
+  }
+}

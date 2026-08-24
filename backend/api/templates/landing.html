@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Professional SIWES Reports & Presentations</h2>
+  <p class="muted">Order your SIWES report in the {{ school.name }} format. Auto-generated Word and PowerPoint, delivered minutes after submitting your internship details.</p>
+</div>
+
+<div class="card">
+  <h3>Choose your package</h3>
+  <div class="package-grid" id="packages">
+    <div class="pkg-card" data-pkg="basic">
+      <div class="pkg-name">Basic</div>
+      <div class="pkg-price">₦<span data-price="basic">{{ prices.basic.amount }}</span></div>
+      <div class="pkg-features">Word document only</div>
+    </div>
+    <div class="pkg-card" data-pkg="standard">
+      <div class="pkg-name">Standard</div>
+      <div class="pkg-price">₦<span data-price="standard">{{ prices.standard.amount }}</span></div>
+      <div class="pkg-features">Word + 15-slide PowerPoint</div>
+    </div>
+    <div class="pkg-card" data-pkg="premium">
+      <div class="pkg-name">Premium</div>
+      <div class="pkg-price">₦<span data-price="premium">{{ prices.premium.amount }}</span></div>
+      <div class="pkg-features">Word + PowerPoint + priority queue + printing</div>
+    </div>
+  </div>
+
+  <label style="display:flex;align-items:center;gap:0.5rem;background:#fafafa;padding:0.75rem;border-radius:5px;border:1px solid var(--border)">
+    <input type="checkbox" id="express"> Express delivery (+₦<span data-price="express_addon">{{ prices.express_addon.amount }}</span>)
+  </label>
+
+  <label>Full name <input type="text" id="student_name" placeholder="As it appears on your transcript"></label>
+  <div class="row">
+    <label>Matric number <input type="text" id="matric_no" style="text-transform:uppercase"></label>
+    <label>Email <input type="email" id="email"></label>
+  </div>
+  <label>Referral code <small>(optional)</small> <input type="text" id="referral_code" placeholder="{{ school.referral_prefix }}-XXXXX" style="text-transform:uppercase"></label>
+
+  <div class="summary" id="summary" style="display:none;">
+    <div><strong>Package:</strong> <span id="sum-pkg">—</span></div>
+    <div><strong>Subtotal:</strong> ₦<span id="sum-base">0</span></div>
+    <div id="sum-discount-row" style="display:none;"><strong>Referral discount:</strong> −₦<span id="sum-discount">0</span></div>
+    <div id="sum-credit-row" style="display:none;"><strong>Credit applied:</strong> −₦<span id="sum-credit">0</span></div>
+    <div class="total">Total: ₦<span id="sum-total">0</span></div>
+  </div>
+
+  <button class="gold" id="pay" disabled>Proceed to payment</button>
+  <p class="muted" id="msg"></p>
+</div>
+
+<p class="muted" style="text-align:center;"><a href="/{{ school.slug }}/orders/lookup">Find a previous order</a></p>
+
+<script>
+const slug = {{ school.slug | tojson }};
+let selected = null;
+const els = {
+  packages: document.querySelectorAll('.pkg-card'),
+  express: document.getElementById('express'),
+  matric: document.getElementById('matric_no'),
+  email: document.getElementById('email'),
+  name: document.getElementById('student_name'),
+  code: document.getElementById('referral_code'),
+  pay: document.getElementById('pay'),
+  msg: document.getElementById('msg'),
+};
+
+els.packages.forEach(card => {
+  card.addEventListener('click', () => {
+    els.packages.forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selected = card.dataset.pkg;
+    refresh();
+  });
+});
+['change','input'].forEach(ev => {
+  els.express.addEventListener(ev, refresh);
+  els.matric.addEventListener(ev, debounce(refresh, 250));
+  els.code.addEventListener(ev, debounce(refresh, 250));
+  els.email.addEventListener(ev, refresh);
+  els.name.addEventListener(ev, refresh);
+});
+
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+async function refresh() {
+  const summary = document.getElementById('summary');
+  if (!selected) { summary.style.display = 'none'; els.pay.disabled = true; return; }
+  document.getElementById('sum-pkg').textContent = selected;
+  summary.style.display = 'block';
+  const matric = els.matric.value.trim().toUpperCase();
+  const code = els.code.value.trim().toUpperCase();
+  const express = els.express.checked;
+  const ready = matric && els.email.value.trim() && els.name.value.trim();
+  if (!matric) { return; }
+  try {
+    const q = new URLSearchParams({ matric_no: matric, package: selected, express: express ? '1' : '0' });
+    if (code) q.set('code', code);
+    const r = await fetch(`/${slug}/api/referral/quote?${q.toString()}`);
+    const data = await r.json();
+    const prices = {{ prices | tojson }};
+    const pkg = prices[selected] || prices.basic;
+    let base = pkg.amount + (express ? prices.express_addon.amount : 0);
+    document.getElementById('sum-base').textContent = base.toLocaleString();
+    document.getElementById('sum-discount').textContent = data.code_discount.toLocaleString();
+    document.getElementById('sum-discount-row').style.display = data.code_discount ? 'block' : 'none';
+    document.getElementById('sum-credit').textContent = data.credit_applied.toLocaleString();
+    document.getElementById('sum-credit-row').style.display = data.credit_applied ? 'block' : 'none';
+    document.getElementById('sum-total').textContent = data.amount.toLocaleString();
+    els.pay.disabled = !ready;
+  } catch (e) {
+    els.msg.textContent = 'Could not refresh price.';
+  }
+}
+
+els.pay.addEventListener('click', async () => {
+  els.pay.disabled = true; els.msg.textContent = 'Preparing payment…';
+  try {
+    const r = await fetch(`/${slug}/orders/initiate`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        student_name: els.name.value.trim(),
+        matric_no: els.matric.value.trim().toUpperCase(),
+        email: els.email.value.trim(),
+        package: selected,
+        express: els.express.checked,
+        referral_code: els.code.value.trim().toUpperCase() || null,
+      }),
+    });
+    const data = await r.json();
+    if (!r.ok) { throw new Error(data.detail || 'Failed'); }
+    if (data.authorization_url) { window.location = data.authorization_url; return; }
+    if (data.form_url) { window.location = data.form_url; return; }
+    window.location = data.status_url;
+  } catch (e) {
+    els.msg.textContent = e.message || 'Failed';
+    els.pay.disabled = false;
+  }
+});
+</script>
+{% endblock %}
